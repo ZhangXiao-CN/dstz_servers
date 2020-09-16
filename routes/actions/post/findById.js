@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
 		}
 	}
 	// 查询文章信息
-	const post = await Post.findOne({ _id: id }).populate(' author category');
+	const post = await Post.findOne({ _id: id }).select('-likesUser -Favorites').populate('author', 'avatar nickName').populate('category');
 	// 增加文章阅读数量
 	post.meta.views = post.meta.views + 1;
 	// 保存

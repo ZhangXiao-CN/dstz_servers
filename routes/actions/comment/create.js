@@ -21,7 +21,9 @@ module.exports = async (req, res) => {
 		// 保存文章数据
 		await post.save()
 		// 响应
-		res.send(comment)
+		const id = comment._id
+		const com = await Comment.findById(id).populate('author', '-password -attention -createTime -email -fans -gender -role -site -status -status -thumb -Favorites -autograph').populate('post', '-content -meta -html -likesUser -summary -thumbnail -Favorites').select('-likes')
+		res.send(com)
 	} else {
 		res.status(400).send({ message: '请登录' })
 	}

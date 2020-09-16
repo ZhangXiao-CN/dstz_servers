@@ -11,7 +11,11 @@ module.exports = async (req, res) => {
 	// 如果页码没有传递
 	if (!page || !_.isNumber(page)) page = 1
 	// 查询用户信息
-	const posts = await pagination(Comment).page(page).size(10).display(5).find({ post: req.params.id }).populate('author', '-password -attention -createTime -email -fans -gender -role -site -status -status').populate('post', '-content -meta -html').exec()
+	const posts = await pagination(Comment).page(page).size(10).display(5).find({ post: req.params.id })
+		.populate('author', 'avatar nickName')
+		.populate('post', '-content -meta -html -likesUser -summary -thumbnail -Favorites')
+		.populate('replies.from_uid', 'avatar nickName')
+		.populate('replies.to_uid', 'avatar nickName').select('-likes').exec()
 	// 响应
 	res.send(posts)
 }

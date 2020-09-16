@@ -13,6 +13,8 @@ comment.get('/count', require('./actions/comment/count'))
 comment.get('/lasted', require('./actions/comment/lasted'))
 // 更改评论状态
 comment.put('/:id', require('./actions/comment/findByIdAndUpdate'))
+// 添加回复
+comment.put('/createReply/:id', require('./actions/comment/createReply'))
 
 // 导出路由
 module.exports = comment

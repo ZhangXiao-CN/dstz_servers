@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
 		condition.state = req.query.state
 	}
 	// 查询用户信息
-	const posts = await pagination(Post).page(page).size(10).display(5).find(condition).populate('author', '-password').populate('category').select('-content -html').exec()
+	const posts = await pagination(Post).page(page).size(10).display(5).find(condition).populate('author', 'avatar nickName').populate('category').select('-content -html').exec()
 	// 响应
 	res.send(posts)
 }
