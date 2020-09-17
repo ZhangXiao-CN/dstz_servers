@@ -10,21 +10,13 @@ module.exports = async (req, res) => {
   const id = req.params.id
   // 点赞
   try {
-    const post = await Post.findByIdAndUpdate({ _id: id }, { $pull: { likesUser: req.session.userInfo._id } }, { new: true })
+    const post = await Post.findByIdAndUpdate(id, { $pull: { likesUser: req.session.userInfo._id } }, { new: true }).select('meta')
     // 赞数量-1
     post.meta.likes = post.meta.likes - 1
     // 保存
     await post.save()
-    let islike = false
-    post.likesUser.forEach(item => {
-      if (item == req.session.userInfo._id) {
-        islike = true
-      } else {
-        islike = false
-      }
-    })
     // 响应
-    res.send({ islike: islike, post: post })
+    res.send({ islike: false, post: post })
   } catch (error) {
     console.log(error)
     res.status(400).send('操作失败!')

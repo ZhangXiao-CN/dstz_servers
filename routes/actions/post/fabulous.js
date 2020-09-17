@@ -10,9 +10,8 @@ module.exports = async (req, res) => {
 	const id = req.params.id
 	try {
 		// 点赞
-		await Post.update({ _id: id }, { $addToSet: { likesUser: req.session.userInfo._id } })
+		const post = await Post.findByIdAndUpdate(id, { $addToSet: { likesUser: req.session.userInfo._id } }, { new: true }).select('meta')
 		// 查询用户信息
-		const post = await Post.findOne({ likesUser: req.session.userInfo._id }).select('meta')
 		// 赞数量+1
 		post.meta.likes = post.meta.likes + 1
 		// 保存

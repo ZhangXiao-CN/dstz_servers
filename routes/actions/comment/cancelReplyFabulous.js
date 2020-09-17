@@ -29,7 +29,6 @@ module.exports = async (req, res) => {
       }
     }
     comment.save()
-    res.send(comment)
   } catch (error) {
     console.log(error)
     res.status(400).send('操作失败!')

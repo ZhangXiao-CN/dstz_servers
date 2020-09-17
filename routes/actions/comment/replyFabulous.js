@@ -29,7 +29,6 @@ module.exports = async (req, res) => {
           break // 响应后跳出循环
         }
       }
-      console.log(comment.replies.length)
     }
     await comment.save()
   } catch (error) {

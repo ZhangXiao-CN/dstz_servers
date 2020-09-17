@@ -3,7 +3,10 @@ const { Comment } = require('../../../model/Comment')
 
 module.exports = async (req, res) => {
 	// 查询用户信息
-	const posts = await Comment.find().populate('author', '-password').sort('-createAt').limit(5)
+	const comment = await Comment.find({})
+		.populate('author', 'avatar nickName')
+		.populate('post', 'meta summary title createAt')
+		.sort('-createAt').limit(7)
 	// 响应
-	res.send(posts)
+	res.send(comment)
 }

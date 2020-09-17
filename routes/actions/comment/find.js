@@ -1,10 +1,8 @@
-// 用户模块
 const { Comment } = require('../../../model/Comment')
 // 分页
 const pagination = require('mongoose-sex-page')
 // 工具
 const _ = require('lodash')
-const { post } = require('../../comment')
 
 module.exports = async (req, res) => {
 	// 当前页

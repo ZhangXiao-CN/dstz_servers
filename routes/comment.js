@@ -8,9 +8,9 @@ comment.delete('/:id', require('./actions/comment/findByIdAndDelete'))
 // 获取评论列表
 comment.get('/:id', require('./actions/comment/find'))
 // 获取评论数量
-comment.get('/count', require('./actions/comment/count'))
+comment.get('/find/count', require('./actions/comment/count'))
 // 获取最新评论
-comment.get('/lasted', require('./actions/comment/lasted'))
+comment.get('/find/lasted', require('./actions/comment/lasted'))
 // 更改评论状态
 comment.put('/:id', require('./actions/comment/findByIdAndUpdate'))
 // 添加回复
@@ -23,5 +23,7 @@ comment.post('/cancelFabulous/:id', require('./actions/comment/cancelFabulous'))
 comment.post('/replyFabulous/:id', require('./actions/comment/replyFabulous'))
 // 回复取消点赞
 comment.post('/cancelReplyFabulous/:id', require('./actions/comment/cancelReplyFabulous'))
+// 测试
+// comment.get('/test', require('./actions/comment/test'))
 // 导出路由
 module.exports = comment
