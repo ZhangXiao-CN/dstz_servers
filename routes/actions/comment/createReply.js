@@ -13,13 +13,14 @@ module.exports = async (req, res) => {
           content: req.fields.content,
         }
       }
-    }, { new: true }).populate('author', 'avatar nickName')
+    }, { new: true })
+      .populate('author', 'avatar nickName')
       .populate('post', '-content -meta -html -likesUser -summary -thumbnail -Favorites')
       .select('-likes')
       .populate('replies.from_uid', 'avatar nickName')
       .populate('replies.to_uid', 'avatar nickName')
     // 找到被评论的文章
-    let post = await Post.findOne({ _id: req.fields.postId })
+    let post = await Post.findOne({ _id: req.fields.postId }).select('meta')
     // 修改评论数量
     post.meta.comments = post.meta.comments + 1
     // 保存文章数据
@@ -27,7 +28,7 @@ module.exports = async (req, res) => {
     // 响应
     // const id = comment._id
     // const com = await Comment.findById(id).populate('author', '-password -attention -createTime -email -fans -gender -role -site -status -status -thumb -Favorites -autograph').populate('post', '-content -meta -html -likesUser -summary -thumbnail -Favorites').select('-likes')
-    res.send(comment)
+    res.send({ comment, post })
   } else {
     res.status(400).send({ message: '请登录' })
   }

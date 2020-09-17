@@ -15,15 +15,15 @@ module.exports = async (req, res) => {
 		// 保存评论
 		await comment.save()
 		// 找到被评论的文章
-		let post = await Post.findOne({ _id: req.fields.post })
+		let post = await Post.findOne({ _id: req.fields.post }).select('meta')
 		// 修改评论数量
 		post.meta.comments = post.meta.comments + 1
 		// 保存文章数据
 		await post.save()
 		// 响应
 		const id = comment._id
-		const com = await Comment.findById(id).populate('author', '-password -attention -createTime -email -fans -gender -role -site -status -status -thumb -Favorites -autograph').populate('post', '-content -meta -html -likesUser -summary -thumbnail -Favorites').select('-likes')
-		res.send(com)
+		const com = await Comment.findById(id).populate('author', 'avatar nickName').populate('post', '-content -meta -html -likesUser -summary -thumbnail -Favorites').select('-likes')
+		res.send({ com, post })
 	} else {
 		res.status(400).send({ message: '请登录' })
 	}

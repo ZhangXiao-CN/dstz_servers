@@ -15,6 +15,13 @@ comment.get('/lasted', require('./actions/comment/lasted'))
 comment.put('/:id', require('./actions/comment/findByIdAndUpdate'))
 // 添加回复
 comment.put('/createReply/:id', require('./actions/comment/createReply'))
-
+// 评论点赞
+comment.post('/fabulous/:id', require('./actions/comment/fabulous'))
+// 评论取消点赞
+comment.post('/cancelFabulous/:id', require('./actions/comment/cancelFabulous'))
+// 回复点赞
+comment.post('/replyFabulous/:id', require('./actions/comment/replyFabulous'))
+// 回复取消点赞
+comment.post('/cancelReplyFabulous/:id', require('./actions/comment/cancelReplyFabulous'))
 // 导出路由
 module.exports = comment

@@ -21,6 +21,15 @@ const ReplySchema = new Schema({
 		type: String,
 		minlength: 2,
 	},
+	// 点赞数量
+	likeCount: {
+		type: Number,
+		default: 0
+	},
+	likes: {
+		type: [mongoose.Schema.Types.ObjectId],
+		ref: 'User'
+	},
 	createAt: {
 		type: Date,
 		default: Date.now
@@ -98,6 +107,21 @@ const validateComment = comment => {
 		allowUnknown: true
 	})
 }
+
+async function create() {
+	const a = await Comment.update({}, { $set: { Favorites: [] } }, { multi: true })
+	// await Post.findByIdAndUpdate('5f58481cf164c5391c3f6551', { slide: 2 }, { new: true })
+	// console.log(a)
+	// const post = await Post.create({
+	// 	title: '测试标题',
+	// 	author: '5f38f6e1333efc3740904bf2',
+	// 	content: '测试内容',
+	// 	category: '5f4cd6c51ac6832f506555a4',
+	// 	categoryChilren: '5f4cd6c51ac6832f506555a5'
+	// })
+}
+
+// create()
 
 // 导出模块成员
 module.exports = {

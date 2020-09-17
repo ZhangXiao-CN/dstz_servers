@@ -10,10 +10,19 @@ module.exports = async (req, res) => {
   const id = req.params.id
   // 点赞
   try {
-    const a = await Post.update({ _id: id }, { $pull: { Favorites: req.session.userInfo._id } })
+    const posts = await Post.findByIdAndUpdate({ _id: id }, { $pull: { Favorites: req.session.userInfo._id } }, { new: true })
     // 响应
-    res.send({ isFavorites: false })
+    let isFavorites = false
+    posts.Favorites.forEach(item => {
+      if (item == req.session.userInfo._id) {
+        isFavorites = true
+      } else {
+        isFavorites = false
+      }
+    })
+    res.send(isFavorites)
   } catch (err) {
+    console.log(err)
     res.status(400).send('操作失败!')
   }
 }
