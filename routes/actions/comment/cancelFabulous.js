@@ -12,17 +12,19 @@ module.exports = async (req, res) => {
   try {
     let comment = await Comment.findByIdAndUpdate({ _id: id }, { $pull: { likes: req.session.userInfo._id }, $inc: { likeCount: -1 } }, { new: true })
       .select('likes likeCount').lean() // .lean()将mogoose对象转为普通对象
-    // comment = comment.toObject
-    comment.likes.forEach(item => {
-      if (item == req.session.userInfo._id) {
-        comment.islike = true
-      } else {
-        comment.islike = false
-      }
-    })
-    res.send(comment)
+    if (comment) {
+      comment.likes.forEach(item => {
+        if (item == req.session.userInfo._id) {
+          comment.islike = true
+        } else {
+          comment.islike = false
+        }
+      })
+      res.send(comment)
+    } else {
+      res.status(400).send('找不到评论!')
+    }
   } catch (error) {
-    console.log(error)
     res.status(400).send('操作失败!')
   }
 }

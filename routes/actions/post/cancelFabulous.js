@@ -12,13 +12,14 @@ module.exports = async (req, res) => {
   try {
     const post = await Post.findByIdAndUpdate(id, { $pull: { likesUser: req.session.userInfo._id } }, { new: true }).select('meta')
     // 赞数量-1
-    post.meta.likes = post.meta.likes - 1
-    // 保存
-    await post.save()
-    // 响应
-    res.send({ islike: false, post: post })
+    if (post) {
+      post.meta.likes = post.meta.likes - 1
+      // 保存
+      await post.save()
+      // 响应
+      res.send({ islike: false, post: post })
+    } else { res.status(400).send('找不到文章!') }
   } catch (error) {
-    console.log(error)
     res.status(400).send('操作失败!')
   }
 }

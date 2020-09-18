@@ -11,26 +11,32 @@ module.exports = async (req, res) => {
   try {
     // 点赞
     let comment = await Comment.findById(id)
-      .select('replies') // .lean()将mogoose对象转为普通对象
-    // 查询用户信息
-    // 响应
-    // comment = comment.toJSON()
-    for (let i = 0; i < comment.replies.length; i++) {
-      if (comment.replies[i]._id == req.fields.replyId) {
-        comment.replies[i].likes.pull(req.session.userInfo._id)
-        comment.replies[i].likeCount -= 1
-        res.send({
-          commentId: comment._id,
-          replyId: comment.replies[i]._id,
-          likeCount: comment.replies[i].likeCount,
-          islike: false
-        })
-        break
+      .select('replies')
+    let resData = ''
+    if (comment) {
+      for (let i = 0; i < comment.replies.length; i++) {
+        if (comment.replies[i]._id == req.fields.replyId) {
+          comment.replies[i].likes.pull(req.session.userInfo._id)
+          comment.replies[i].likeCount -= 1
+          resData = {
+            commentId: comment._id,
+            replyId: comment.replies[i]._id,
+            likeCount: comment.replies[i].likeCount,
+            islike: false
+          }
+          break
+        }
       }
+      await comment.save()
+      if (resData) {
+        res.send(resData)
+      } else {
+        res.status(400).send('找不到回复!')
+      }
+    } else {
+      res.status(400).send('找不到评论!')
     }
-    comment.save()
   } catch (error) {
-    console.log(error)
     res.status(400).send('操作失败!')
   }
 

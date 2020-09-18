@@ -2,8 +2,11 @@
 const { Post } = require('../../../model/Post')
 
 module.exports = async (req, res) => {
-	const limit = req.query.size ? req.query.size : 8
-	const posts = await Post.find({ state: 1 }).select('-content').limit(limit).sort('-meta.comments')
+	let limit = 7
+	if (req.query.limit && parseInt(req.query.limit) > 0) {
+		limit = parseInt(req.query.limit)
+	}
+	const posts = await Post.find({ state: 1 }).populate('category').select('title summary createAt categoryChilren category').limit(limit).sort('-meta.views')
 	// 响应
 	res.send(posts)
 }

@@ -10,18 +10,18 @@ module.exports = async (req, res) => {
 	// 如果页码没有传递
 	if (!page || !_.isNumber(page)) page = 1
 	// 查询用户信息
-	let posts = await pagination(Comment).page(page).size(10).display(5).find({ post: req.params.id })
+	let comment = await pagination(Comment).page(page).size(10).display(5).find({ post: req.params.id })
 		.populate('author', 'avatar nickName')
 		.populate('post', '-content -meta -html -likesUser -summary -thumbnail -Favorites')
 		.populate('replies.from_uid', 'avatar nickName')
 		.populate('replies.to_uid', 'avatar nickName').exec()
 	// 将所有的mogoose对象转为普通对象
 	// 此处使用forEach 无法将mogoose对象转为普通对象
-	for (let i = 0; i < posts.records.length; i++) {
-		posts.records[i] = posts.records[i].toObject()
+	for (let i = 0; i < comment.records.length; i++) {
+		comment.records[i] = comment.records[i].toObject()
 	}
 
-	posts.records.forEach(item => {
+	comment.records.forEach(item => {
 		if (req.session.userInfo) {
 			item.likes.forEach(commentLike => {
 				if (commentLike == req.session.userInfo._id) {
@@ -39,5 +39,5 @@ module.exports = async (req, res) => {
 		}
 		item.likes = ''
 	})
-	res.send(posts)
+	res.send(comment)
 }

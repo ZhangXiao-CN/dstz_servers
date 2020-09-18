@@ -29,6 +29,10 @@ post.get('/search/:key', require('./actions/post/search'))
 post.get('/:id', require('./actions/post/findById'))
 // 根据ID修改文章
 post.put('/:id', require('./actions/post/findByIdAndUpdate'))
+// 查询用户的文章
+post.get('/findAuthor/:id', require('./actions/post/findAuthor'))
+// 查询用户收藏的文章
+post.get('/findFavorites/:id', require('./actions/post/findFavorites'))
 
 
 module.exports = post

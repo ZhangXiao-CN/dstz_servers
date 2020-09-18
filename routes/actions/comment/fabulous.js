@@ -14,18 +14,20 @@ module.exports = async (req, res) => {
       .select('likes likeCount').lean() // .lean()将mogoose对象转为普通对象
     // 查询用户信息
     // 响应
-    // comment = comment.toJSON()
-    comment.likes.forEach(item => {
-      if (item == req.session.userInfo._id) {
-        comment.islike = true
-      } else {
-        comment.islike = false
-      }
-    })
-    delete comment.likes
+    if (comment) {
+      comment.likes.forEach(item => {
+        if (item == req.session.userInfo._id) {
+          comment.islike = true
+        } else {
+          comment.islike = false
+        }
+      })
+      delete comment.likes
+    } else {
+      res.status(400).send('找不到评论!')
+    }
     res.send(comment)
   } catch (error) {
-    console.log(error)
     res.status(400).send('操作失败!')
   }
 
