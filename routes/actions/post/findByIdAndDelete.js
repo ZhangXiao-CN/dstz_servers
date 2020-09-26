@@ -2,6 +2,7 @@
 const Joi = require('joi')
 // 用户模块
 const { Post } = require('../../../model/Post')
+const { Comment } = require('../../../model/Comment')
 
 // 文件模块
 const fs = require('fs')
@@ -30,6 +31,13 @@ module.exports = async (req, res) => {
 		let thumbnailPath = post.thumbnail.split('uploads')[1]
 		await unlink(path.join(__dirname, '../', '../', '../', 'public', 'uploads', thumbnailPath))
 	}
+	if (post.imgList.length > 0) {
+		post.imgList.forEach(async item => {
+			const imgName = item.split('uploads/')[1]
+			await unlink(path.join(__dirname, '../', '../', '../', 'public', 'uploads', imgName))
+		})
+	}
+	await Comment.remove({ post: id })
 	// 响应
 	res.send(post)
 }

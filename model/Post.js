@@ -36,19 +36,31 @@ const PostSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	// 内容
+	// markdwon
 	content: {
 		type: String,
 		default: null
 	},
+	// html
 	html: {
 		type: String,
 		default: null
 	},
+	// 摘要
 	summary: {
 		type: String,
 		default: '...'
 	},
+	// 纯文本
+	text: {
+		type: String,
+		default: null
+	},
+	imgList: {
+		type: Array,
+		default: null
+	},
+	// 标签
 	tag: {
 		type: [String],
 		maxlength: 4,
@@ -75,10 +87,12 @@ const PostSchema = new Schema({
 		ref: 'Category.children',
 		default: null
 	},
+	// 点赞
 	likesUser: {
 		type: [mongoose.Schema.Types.ObjectId],
 		ref: 'User'
 	},
+	// 收藏
 	Favorites: {
 		type: [mongoose.Schema.Types.ObjectId],
 		ref: 'User'

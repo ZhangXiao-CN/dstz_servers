@@ -6,11 +6,9 @@ module.exports = async (req, res) => {
 	const { error } = validatePost(req.fields)
 	// 格式不符合要求
 	if (error) return res.status(400).send({ message: error.details })
-	// 添加作者
-	// req.fields.author = req.session.userInfo._id
-	// 创建分类
+	// 创建文章
 	const post = new Post(req.fields)
-	// 保存分类
+	// 保存文章
 	await post.save()
 	// 响应
 	res.send(post)
