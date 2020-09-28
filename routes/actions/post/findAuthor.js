@@ -7,6 +7,6 @@ module.exports = async (req, res) => {
   const state = req.query.state ? parseInt(req.query.state) : 1
   const posts = await Post.find({ author: id, state: state })
     .select('title meta summary thumbnail categoryChilren category updateAt createAt tag')
-    .limit(limit)
+    .limit(limit).sort('-updateAt')
   res.send(posts)
 }
