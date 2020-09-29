@@ -6,9 +6,10 @@ module.exports = async (req, res) => {
 	// 判断用户是否处于登录状态
 	if (req.session.userInfo) {
 		// 原始正确密码
-		const originPass = req.session.userInfo.password
-		// 用户id
 		const _id = req.session.userInfo._id
+		const userData = await User.findById(_id).select('password').lean()
+		const originPass = userData.password
+		// 用户id
 		// 获取新密码以及确认密码
 		const { userPass, newPass, confirmPass } = req.fields
 		// 如果用户输入的密码和原始密码一致
@@ -20,8 +21,13 @@ module.exports = async (req, res) => {
 				const salt = await bcrypt.genSalt(10)
 				const finalPass = await bcrypt.hash(newPass, salt)
 				let user = await User.findByIdAndUpdate(_id, { $set: { password: finalPass } })
-				req.session.userInfo = null
-				res.send({ message: '密码修改成功' })
+				if (user) {
+					req.session.userInfo = null
+					res.send({ state: true, message: '密码修改成功' })
+				} else {
+					res.status(400).send({ message: '密码修改失败' })
+				}
+
 			} else {
 				res.status(400).send({ message: '两次新密码输入的不相同' })
 			}
