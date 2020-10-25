@@ -11,7 +11,7 @@ const app = express()
 
 app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', 'http://localhost:8080') //当允许携带cookies此处的白名单不能写’*’
-  // res.header('Access-Control-Allow-Origin', 'http://192.168.1.112') //当允许携带cookies此处的白名单不能写’*’
+  // res.header('Access-Control-Allow-Origin', 'http://127.0.0.1') //当允许携带cookies此处的白名单不能写’*’
   res.header('Access-Control-Allow-Headers', 'content-type,Content-Length, Authorization,Origin,Accept,X-Requested-With') //允许的请求头
   res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE') //允许的请求方法
   res.header('Access-Control-Allow-Credentials', true)  //允许携带cookies

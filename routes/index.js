@@ -10,6 +10,7 @@ module.exports = app => {
 	app.use('/api/comments', require('./comment'))
 	// 轮播图
 	app.use('/api/slides', require('./slide'))
+	app.use('/api/messages', require('./message'))
 
 	// 其他
 	// 用户登录
