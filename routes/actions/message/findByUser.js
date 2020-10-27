@@ -10,6 +10,9 @@ module.exports = async (req, res) => {
       .populate('fromArticle', 'title')
       .populate('fromComment', 'content')
       .limit(limit)
+    notices.forEach(async item => {
+      await Notice.findByIdAndUpdate(item._id, { state: 1 })
+    })
     res.send(notices)
   } else {
     res.status(400).send({ message: '请登陆' })

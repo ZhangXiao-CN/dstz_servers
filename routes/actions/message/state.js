@@ -2,7 +2,7 @@ const { Notice } = require('../../../model/Notice')
 
 module.exports = async (req, res) => {
   if (req.session.userInfo) {
-    const notices = await Notice.find({ toUser: req.session.userInfo._id })
+    const notices = await Notice.find({ toUser: req.session.userInfo._id, state: 0 })
     if (notices.length > 0) {
       res.send(true)
     } else {
